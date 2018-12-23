@@ -16,6 +16,7 @@ class Board(object):
     def printBoard(self):
         for row in self.tabuleiro:
             print("\t", " ".join(row))
+        print("\n")
 
     def set_mark_on_board(self, row, col, mark):
         self.tabuleiro[row][col] = mark
@@ -23,5 +24,5 @@ class Board(object):
     def eraseMark(self, mark):
         for posX in range(1,self.size):
             for posY in range(1,self.size):
-                if self.tabuleiro[posX][posY] == mark:
-                    self.set_mark_on_board(posX, posY, "_")
+                if self.tabuleiro[posX-1][posY-1] == mark:
+                    self.set_mark_on_board(posX-1, posY-1, "_")
