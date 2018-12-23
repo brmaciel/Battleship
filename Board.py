@@ -1,10 +1,10 @@
 class Board(object):
     size = 10
-    tabuleiro = []
 
     def __init__(self, nome):
         self.nome = nome
-        #self.defineBoard()
+        self.tabuleiro = []
+        self.defineBoard()
 
     def getSize(self):
         return self.size
@@ -14,8 +14,8 @@ class Board(object):
             self.tabuleiro.append(['_'] * self.size)
 
     def printBoard(self):
-        for row in self.tabuleiro:
-            print("\t", " ".join(row))
+        for rows in self.tabuleiro:
+            print("\t", " ".join(rows))
         print("\n")
 
     def setMark_on_board(self, row, col, mark):
