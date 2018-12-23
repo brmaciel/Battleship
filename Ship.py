@@ -5,10 +5,11 @@ class Ship(object):
     bottom_row = 0
     bottom_col = 0
 
-    def __init__(self, size, orientation, mark):
+    def __init__(self, size, orientation, mark, name):
         self.size = size
         self.orientat = orientation
         self.mark = mark                # define a letra que sera usada para marcar o navio no tabuleiro
+        self.name = name
 
     def definePosition(self):
         # se a orientacao eh horizontal, entao a 1st posicao do navio na coluna, deve ser boardLength-self.size+1
@@ -26,3 +27,6 @@ class Ship(object):
 
     def getSize(self):
         return self.size
+
+    def getName(self):
+        return self.name
