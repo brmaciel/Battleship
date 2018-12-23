@@ -11,6 +11,7 @@ class Ship(object):
         self.mark = mark                # define a letra que sera usada para marcar o navio no tabuleiro
         self.name = name
         self.life = size
+        self.definePosition()
 
     def definePosition(self):
         # se a orientacao eh horizontal, entao a 1st posicao do navio na coluna, deve ser boardLength-self.size+1

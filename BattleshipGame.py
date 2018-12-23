@@ -1,17 +1,13 @@
 from Board import *
 from Ship import *
 
+###   Initialize Objects   ###
 # Create all ships
 destroyer = Ship(2, 'v', "D", "Destroyer")
-destroyer.definePosition()
 cruiser = Ship(3, 'h', "C", "Cruiser")
-cruiser.definePosition()
 submarine = Ship(3, 'v', "S", "Submarine")
-submarine.definePosition()
 battleship = Ship(4, 'h', "B", "Battleship")
-battleship.definePosition()
 carrier = Ship(5, 'v', "R", "Carrier")
-carrier.definePosition()
 
 # list must be in a descending size-sorted, cuz that's the order the ships will be placed on the board
 shipsList = [carrier, battleship, submarine, cruiser, destroyer]
@@ -22,7 +18,9 @@ gameBoard = Board("jogo")
 answerBoard = Board("respostas")
 #end
 
-### Function to set ships on answerBoard ###
+
+
+###   Function to set ships on answerBoard   ###
 def set_ship_on_board(ship):
     # Define ships' position on the board_answer
     ship_row = ship.getRow()-1
@@ -66,7 +64,6 @@ def set_ship_on_board(ship):
                 return False
     return True
 
-
 def reposition(check, ship):
     # Reset the ship on board in case it was overlaping another ship
     while check != True:
@@ -76,6 +73,7 @@ def reposition(check, ship):
         check = set_ship_on_board(ship)
 
 def setAllShips_onBoard():
+    # loop to set ao ships on board
     for ship in shipsList:
         success = set_ship_on_board(ship)
         if success != True:
@@ -84,6 +82,8 @@ def setAllShips_onBoard():
 #end
 
 
+
+###   Auxiliary Functions   ###
 # Check if rows and columns input are valid
 def checkInput(userInput, opt):
     # input must be: (an integer) AND (between 1 and board size)
@@ -103,15 +103,17 @@ def shipHit(mark):
         if mark == ship.getMark():
             ship.hitTaken()
             if ship.getLife() == 0:
+                # if the ship hit gets life to zero, it means it was destroyed
                 print("*** Hooyah! %s was destroyed ***" %ship.getName())
 #end
+
+
 
 ###   Main Function to Start the Game   ###
 def startGame():
     setAllShips_onBoard()
     print("\n\t\tBattleship: The Game")
     print(" ===== The Battle has Started ===== \n")
-    #answerBoard.printBoard()
     gameBoard.printBoard()
 
     num_tries = 34
@@ -127,7 +129,7 @@ def startGame():
                 shipsAlive.append(ship.getName())
         print("Ships remaining: ", shipsAlive)
 
-        print("Turns left: %d" % abs(turn - num_tries))
+        print("Turn: %d/%d" %(turn+1,num_tries))
         print("Pieces Left: ", piecesLeft)              # how many pieces os ships weren't hit yet
         rowPicked = input("Pick a row [1~%d]: " %gameBoard.getSize())
         rowPicked = checkInput(rowPicked , "row")
