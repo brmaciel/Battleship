@@ -21,7 +21,8 @@ shipsList = [carrier, battleship, submarine, cruiser, destroyer]
 gameBoard = Board("jogo")
 answerBoard = Board("respostas")
 
-gameBoard.defineBoard()
+#gameBoard.defineBoard()
+#answerBoard.defineBoard()
 #end
 
 ### Function to set ships on answerBoard ###
@@ -86,4 +87,38 @@ def setAllShips_onBoard():
 #end
 
 
-setAllShips_onBoard()
+# Check if rows and columns input are valid
+def checkInput(userInput, opt):
+    # input must be: (an integer) AND (between 1 and board size)
+    while (userInput.isdigit() == False) or (int(userInput) > gameBoard.getSize()) or (int(userInput) < 1):
+        if (userInput.isdigit() == False):
+            print("Error: You must enter numbers only")
+            userInput = input("Pick a %s [1~%d]: " %(opt, gameBoard.getSize()))
+        else:
+            print("Oops, that's not even in the ocean. Pick a row between 1 and %d" %gameBoard.getSize())
+            userInput = input("Pick a %s [1~%d]: " %(opt, gameBoard.getSize()))
+    return int(userInput)
+#end
+
+###   Main Function to Start the Game   ###
+def startGame():
+    setAllShips_onBoard()
+    print("\n\t\tBattleship: The Game")
+    print(" ===== The Battle has Started ===== \n")
+
+    num_tries = 25
+    hits = 0
+    piecesLeft = 0
+    for ship in shipsList:
+        piecesLeft += ship.getSize()
+
+    for turn in range(1,num_tries):
+        print("Pieces Left: ", piecesLeft)
+        rowPicked = input("Pick a row [1~%d]: " %gameBoard.getSize())
+        rowPicked = checkInput(rowPicked , "row")
+        colPicked = input("Pick a col [1~%d]: " %gameBoard.getSize())
+        colPicked = checkInput(colPicked, "col")
+
+    return 0
+
+startGame()
