@@ -22,6 +22,16 @@ class Ship(object):
             self.bottom_row = randint(1, boardGame.getSize()-self.size+1)
             self.bottom_col = randint(1, boardGame.getSize())
 
+    ###   Metodos Get   ###
+    def getRow(self):
+        return self.bottom_row
+
+    def getCol(self):
+        return self.bottom_col
+
+    def getMark(self):
+        return self.mark
+
     def getOrientation(self):
         return self.orientat
 

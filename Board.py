@@ -18,11 +18,11 @@ class Board(object):
             print("\t", " ".join(row))
         print("\n")
 
-    def set_mark_on_board(self, row, col, mark):
+    def setMark_on_board(self, row, col, mark):
         self.tabuleiro[row][col] = mark
 
     def eraseMark(self, mark):
         for posX in range(1,self.size):
             for posY in range(1,self.size):
                 if self.tabuleiro[posX-1][posY-1] == mark:
-                    self.set_mark_on_board(posX-1, posY-1, "_")
+                    self.setMark_on_board(posX-1, posY-1, "_")

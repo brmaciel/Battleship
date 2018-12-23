@@ -27,21 +27,21 @@ gameBoard.defineBoard()
 ### Function to set ships on answerBoard ###
 def set_ship_on_board(ship):
     # Define ships' position on the board_answer
-    ship_row = ship.bottom_row-1
-    ship_col = ship.bottom_col-1
+    ship_row = ship.getRow()-1
+    ship_col = ship.getCol()-1
     if ship.getOrientation() == 'h':
         if answerBoard.tabuleiro[ship_row][ship_col] == "_":
-            answerBoard.set_mark_on_board(ship_row,ship_col, ship.mark)
+            answerBoard.setMark_on_board(ship_row,ship_col, ship.getMark())
             # To know the position of first piece of ship, uncomment the line below
             #print ("row: ",ship_row, " col: ", ship_col)
         else:
-            answerBoard.eraseMark(ship.mark)
+            answerBoard.eraseMark(ship.getMark())
             return False
 
         for pieces in range(1,ship.getSize()):
             ship_col += 1
             if answerBoard.tabuleiro[ship_row][ship_col] == "_":
-                answerBoard.set_mark_on_board(ship_row, ship_col, ship.mark)
+                answerBoard.setMark_on_board(ship_row, ship_col, ship.getMark())
                 # To know the position of first piece of ship, uncomment the line below
                 # print ("row: ",ship_row, " col: ", ship_col)
             else:
@@ -50,21 +50,21 @@ def set_ship_on_board(ship):
 
     elif ship.getOrientation() == "v":
         if answerBoard.tabuleiro[ship_row][ship_col] == "_":
-            answerBoard.set_mark_on_board(ship_row, ship_col, ship.mark)
+            answerBoard.setMark_on_board(ship_row, ship_col, ship.getMark())
             # To know the position of first piece of ship, uncomment the line below
             #print ("row: ",ship_row, " col: ", ship_col)
         else:
-            answerBoard.eraseMark(ship.mark)
+            answerBoard.eraseMark(ship.getMark())
             return False
 
         for pieces in range(1,ship.getSize()):
             ship_row += 1
             if answerBoard.tabuleiro[ship_row][ship_col] == "_":
-                answerBoard.set_mark_on_board(ship_row, ship_col, ship.mark)
+                answerBoard.setMark_on_board(ship_row, ship_col, ship.getMark())
                 # To know the position of first piece of ship, uncomment the line below
                 # print ("row: ",ship_row, " col: ", ship_col)
             else:
-                answerBoard.eraseMark(ship.mark)
+                answerBoard.eraseMark(ship.getMark())
                 return False
     return True
 
@@ -82,7 +82,8 @@ def setAllShips_onBoard():
         success = set_ship_on_board(ship)
         if success != True:
             reposition(success, ship)
-    answerBoard.printBoard()
+    #answerBoard.printBoard()           # show the position of all ships on board
 #end
+
 
 setAllShips_onBoard()
