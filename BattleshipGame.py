@@ -105,19 +105,45 @@ def startGame():
     setAllShips_onBoard()
     print("\n\t\tBattleship: The Game")
     print(" ===== The Battle has Started ===== \n")
+    gameBoard.printBoard()
 
-    num_tries = 25
+    num_tries = 10
     hits = 0
     piecesLeft = 0
     for ship in shipsList:
         piecesLeft += ship.getSize()
 
-    for turn in range(1,num_tries):
-        print("Pieces Left: ", piecesLeft)
+    for turn in range(0,num_tries):
+        print("Turns left: %d" % abs(turn - num_tries))
+        print("Pieces Left: ", piecesLeft-hits)
         rowPicked = input("Pick a row [1~%d]: " %gameBoard.getSize())
         rowPicked = checkInput(rowPicked , "row")
         colPicked = input("Pick a col [1~%d]: " %gameBoard.getSize())
         colPicked = checkInput(colPicked, "col")
+
+        if gameBoard.tabuleiro[rowPicked-1][colPicked-1] == 'o':
+            # 'o' mark on gameBoard means places already picked
+            print(" You picked that one already. You lost a try")
+        elif answerBoard.tabuleiro[rowPicked-1][colPicked-1] != '_' and answerBoard.tabuleiro[rowPicked-1][colPicked-1] != 'x':
+             # '_' marker on answerBoard means it's water
+             # 'x' marker on answerBoard means it's water and has already been picked
+             print(" # Hooyah! - Battleship hit! #")
+             gameBoard.setMark_on_board(rowPicked-1, colPicked-1, 'o')
+             hits += 1
+        elif answerBoard.tabuleiro[rowPicked-1][colPicked-1] == 'x':
+            # 'x' on answerBoard means place has a ship but was already picked
+            print(" You picked that one already. You lost a try")
+        else:
+            print(" # Water! You missed the battleship! #")
+            gameBoard.setMark_on_board(rowPicked-1, colPicked-1, 'x')
+            answerBoard.setMark_on_board(rowPicked-1, colPicked-1, 'x')
+
+        gameBoard.printBoard()
+
+        if turn == num_tries-1:
+            print("\t###   Game Over!   ###")
+            print("Location of Ships:")
+            answerBoard.printBoard()
 
     return 0
 
