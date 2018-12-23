@@ -10,6 +10,7 @@ class Ship(object):
         self.orientat = orientation
         self.mark = mark                # define a letra que sera usada para marcar o navio no tabuleiro
         self.name = name
+        self.life = size
 
     def definePosition(self):
         # se a orientacao eh horizontal, entao a 1st posicao do navio na coluna, deve ser boardLength-self.size+1
@@ -21,6 +22,9 @@ class Ship(object):
         elif self.orientat == 'v':
             self.bottom_row = randint(1, boardGame.getSize()-self.size+1)
             self.bottom_col = randint(1, boardGame.getSize())
+
+    def hitTaken(self):
+        self.life -= 1;
 
     ###   Metodos Get   ###
     def getRow(self):
@@ -40,3 +44,6 @@ class Ship(object):
 
     def getName(self):
         return self.name
+
+    def getLife(self):
+        return self.life

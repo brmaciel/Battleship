@@ -2,15 +2,15 @@ from Board import *
 from Ship import *
 
 # Create all ships
-destroyer = Ship(2, 'v', "D", "destroyer")
+destroyer = Ship(2, 'v', "D", "Destroyer")
 destroyer.definePosition()
-cruiser = Ship(3, 'h', "C", "cruiser")
+cruiser = Ship(3, 'h', "C", "Cruiser")
 cruiser.definePosition()
-submarine = Ship(3, 'v', "S", "submarine")
+submarine = Ship(3, 'v', "S", "Submarine")
 submarine.definePosition()
-battleship = Ship(4, 'h', "B", "battleship")
+battleship = Ship(4, 'h', "B", "Battleship")
 battleship.definePosition()
-carrier = Ship(5, 'v', "R", "carrier")
+carrier = Ship(5, 'v', "R", "Carrier")
 carrier.definePosition()
 
 # list must be in a descending size-sorted, cuz that's the order the ships will be placed on the board
@@ -20,9 +20,6 @@ shipsList = [carrier, battleship, submarine, cruiser, destroyer]
 # Create the gameBoard and the answerBoard
 gameBoard = Board("jogo")
 answerBoard = Board("respostas")
-
-#gameBoard.defineBoard()
-#answerBoard.defineBoard()
 #end
 
 ### Function to set ships on answerBoard ###
@@ -100,22 +97,38 @@ def checkInput(userInput, opt):
     return int(userInput)
 #end
 
+# Check which ship was hit and reduce it's 'life'
+def shipHit(mark):
+    for ship in shipsList:
+        if mark == ship.getMark():
+            ship.hitTaken()
+            if ship.getLife() == 0:
+                print("*** Hooyah! %s was destroyed ***" %ship.getName())
+#end
+
 ###   Main Function to Start the Game   ###
 def startGame():
     setAllShips_onBoard()
     print("\n\t\tBattleship: The Game")
     print(" ===== The Battle has Started ===== \n")
+    #answerBoard.printBoard()
     gameBoard.printBoard()
 
-    num_tries = 10
-    hits = 0
+    num_tries = 34
     piecesLeft = 0
     for ship in shipsList:
-        piecesLeft += ship.getSize()
+        piecesLeft += ship.getSize()    # return 17, sum of all ships size
 
     for turn in range(0,num_tries):
+        # find out and inform which ships weren't completely destryoed yet
+        shipsAlive = []
+        for ship in shipsList:
+            if ship.getLife() != 0:
+                shipsAlive.append(ship.getName())
+        print("Ships remaining: ", shipsAlive)
+
         print("Turns left: %d" % abs(turn - num_tries))
-        print("Pieces Left: ", piecesLeft-hits)
+        print("Pieces Left: ", piecesLeft)              # how many pieces os ships weren't hit yet
         rowPicked = input("Pick a row [1~%d]: " %gameBoard.getSize())
         rowPicked = checkInput(rowPicked , "row")
         colPicked = input("Pick a col [1~%d]: " %gameBoard.getSize())
@@ -123,24 +136,36 @@ def startGame():
 
         if gameBoard.tabuleiro[rowPicked-1][colPicked-1] == 'o':
             # 'o' mark on gameBoard means places already picked
-            print(" You picked that one already. You lost a try")
+            print("  You picked that one already. You lost a try")
         elif answerBoard.tabuleiro[rowPicked-1][colPicked-1] != '_' and answerBoard.tabuleiro[rowPicked-1][colPicked-1] != 'x':
              # '_' marker on answerBoard means it's water
              # 'x' marker on answerBoard means it's water and has already been picked
-             print(" # Hooyah! - Battleship hit! #")
+             print("  # Hooyah! - Battleship hit! #")
              gameBoard.setMark_on_board(rowPicked-1, colPicked-1, 'o')
-             hits += 1
+             piecesLeft -= 1
+
+             shipHit(answerBoard.tabuleiro[rowPicked - 1][colPicked - 1])   # reduce the life of the ship hit
+
         elif answerBoard.tabuleiro[rowPicked-1][colPicked-1] == 'x':
             # 'x' on answerBoard means place has a ship but was already picked
-            print(" You picked that one already. You lost a try")
+            print("  You picked that one already. You lost a try")
         else:
-            print(" # Water! You missed the battleship! #")
+            # hit the water, so mark the boards with 'x' to mark the place as 'already picked'
+            print("  # Water! You missed the battleship! #")
             gameBoard.setMark_on_board(rowPicked-1, colPicked-1, 'x')
             answerBoard.setMark_on_board(rowPicked-1, colPicked-1, 'x')
 
         gameBoard.printBoard()
 
+        if piecesLeft == 0:
+            # All ships were destroyed
+            print("\t###   You Won!   ###")
+            print("Location of Ships:")
+            answerBoard.printBoard()
+            return 0
+
         if turn == num_tries-1:
+            # Se esgotou o numero de tentativas
             print("\t###   Game Over!   ###")
             print("Location of Ships:")
             answerBoard.printBoard()
