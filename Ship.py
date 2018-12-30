@@ -2,49 +2,56 @@ from random import randint
 from Board import *
 
 class Ship(object):
-    bottom_row = 0
-    bottom_col = 0
+    __bottom_row = 0
+    __bottom_col = 0
 
     def __init__(self, size, orientation, mark, name):
-        self.size = size
-        self.orientat = orientation
-        self.mark = mark                # define a letra que sera usada para marcar o navio no tabuleiro
-        self.name = name
-        self.life = size
+        self.__size = size
+        self.__orientation = orientation
+        self.__mark = mark              # define a letra que sera usada para marcar o navio no tabuleiro
+        self.__name = name
+        self.__life = size
         self.definePosition()
 
     def definePosition(self):
-        # se a orientacao eh horizontal, entao a 1st posicao do navio na coluna, deve ser boardLength-self.size+1
+        # se a orientacao eh horizontal, entao a 1st posicao do navio na coluna, deve ser sizeBoard-sizeNavio+1
         boardGame = Board("ship")
-        if self.orientat == 'h':
-            self.bottom_row = randint(1, boardGame.getSize())
-            self.bottom_col = randint(1, boardGame.getSize()-self.size+1)
-        # se a orientacao eh vertical, entao a 1st posicao do navio na linha, deve ser boardLength-self.size+1
-        elif self.orientat == 'v':
-            self.bottom_row = randint(1, boardGame.getSize()-self.size+1)
-            self.bottom_col = randint(1, boardGame.getSize())
+        if self.__orientation == 'h':
+            self.__bottom_row = randint(1, boardGame.size)
+            self.__bottom_col = randint(1, boardGame.size-self.__size+1)
+        # se a orientacao eh vertical, entao a 1st posicao do navio na linha, deve ser sizeBoard-sizeNavio+1
+        elif self.__orientation == 'v':
+            self.__bottom_row = randint(1, boardGame.size-self.__size+1)
+            self.__bottom_col = randint(1, boardGame.size)
 
     def hitTaken(self):
-        self.life -= 1;
+        self.__life -= 1
 
     ###   Metodos Get   ###
-    def getRow(self):
-        return self.bottom_row
+    @property
+    def row(self):
+        return self.__bottom_row
 
-    def getCol(self):
-        return self.bottom_col
+    @property
+    def col(self):
+        return self.__bottom_col
 
-    def getMark(self):
-        return self.mark
+    @property
+    def mark(self):
+        return self.__mark
 
-    def getOrientation(self):
-        return self.orientat
+    @property
+    def orientation(self):
+        return self.__orientation
 
-    def getSize(self):
-        return self.size
+    @property
+    def size(self):
+        return self.__size
 
-    def getName(self):
-        return self.name
+    @property
+    def name(self):
+        return self.__name
 
+    @property
     def getLife(self):
-        return self.life
+        return self.__life
