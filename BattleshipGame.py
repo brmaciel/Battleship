@@ -78,22 +78,23 @@ def setAllShips_onBoard():
         success = set_ship_on_board(ship)
         if not success:
             reposition(success, ship)
-    answerBoard.printBoard()           # show the position of all ships on board
+    #answerBoard.printBoard()           # show the position of all ships on board
 # end
 
 
 ###   Auxiliary Functions   ###
 # Check if rows and columns input are valid
-def checkInput(userInput, opt):
+def checkInput(opt):
     # input must be: (an integer) AND (between 1 and board size)
-    while (userInput.isdigit() == False) or (int(userInput) > gameBoard.size) or (int(userInput) < 1):
-        if not userInput.isdigit():
+    while True:
+        try:
+            userInput = int(input(f'Pick a {opt} [1~{gameBoard.size}]:').strip())
+            if userInput < 1 or userInput > gameBoard.size:
+                print(f"Oops, that's not even in the ocean. Pick a {opt} between 1 and {gameBoard.size}")
+                continue
+            return userInput
+        except ValueError:
             print('Error: You must enter numbers only')
-            userInput = input('Pick a {} [1~{}]: '.format(opt, gameBoard.size)).strip()
-        else:
-            print("Oops, that's not even in the ocean. Pick a row between 1 and {}".format(gameBoard.size))
-            userInput = input('Pick a {} [1~{}]: '.format(opt, gameBoard.size)).strip()
-    return int(userInput)
 # end
 
 # Check which ship was hit and reduce it's 'life'
@@ -126,13 +127,12 @@ def startGame():
             if ship.getLife != 0:
                 shipsAlive.append(ship.name)
         print('Ships remaining: ', shipsAlive)
-
-        print('Turn: {}/{}'.format(turn + 1, num_tries))
+        print(f'Turn: {turn + 1}/{num_tries}')
         print('Pieces Left: ', piecesLeft)  # how many pieces os ships weren't hit yet
-        rowPicked = input('Pick a row [1~{}]: '.format(gameBoard.size)).strip()
-        rowPicked = checkInput(rowPicked, 'row')
-        colPicked = input('Pick a col [1~{}]: '.format(gameBoard.size)).strip()
-        colPicked = checkInput(colPicked, 'col')
+
+        # User picks a row and col of next attack
+        rowPicked = checkInput('row')
+        colPicked = checkInput('col')
 
         if gameBoard.getBoardPosition(rowPicked - 1, colPicked - 1) == 'o':
             # 'o' mark on gameBoard means places already picked
